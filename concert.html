@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="am">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ዳግማዊ ዓሊ - ኮንሰርቶች</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Noto Serif', serif;
+      line-height: 1.8;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+      color: #333;
+      direction: rtl;
+      text-align: right;
+    }
+    nav {
+      background-color: #2c3e50;
+      padding: 1rem;
+    }
+    nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+    }
+    nav ul li {
+      margin: 0 1rem;
+    }
+    nav ul li a {
+      color: white;
+      text-decoration: none;
+      font-size: 1.2rem;
+    }
+    nav ul li a:hover {
+      text-decoration: underline;
+    }
+    header {
+      background-color: #2c3e50;
+      color: white;
+      text-align: center;
+      padding: 2rem;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 2.5rem;
+    }
+    .container {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 0 1.5rem;
+    }
+    .concerts {
+      background: white;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    .concerts h2 {
+      color: #2c3e50;
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+    }
+    .concerts p {
+      margin: 0.5rem 0;
+      font-size: 1.1rem;
+    }
+    .sk-ww-telegram-channel {
+      width: 100%;
+      min-height: 500px;
+      margin: 1rem 0;
+    }
+    .error-message {
+      color: red;
+      font-size: 1.1rem;
+      text-align: center;
+      margin: 1rem 0;
+    }
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background-color: #2c3e50;
+      color: white;
+      width: 100%;
+      margin-top: 2rem;
+    }
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 1.8rem;
+      }
+      .concerts {
+        padding: 1rem;
+      }
+      nav ul {
+        flex-direction: column;
+        align-items: center;
+      }
+      nav ul li {
+        margin: 0.5rem 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <ul>
+    
+    </ul>
+  </nav>
+  <header>
+    <h1>ኮንሰርቶች</h1>
+  </header>
+  <div class="container">
+    <div class="concerts">
+      <h2>ኮንሰርቶች</h2>
+      <p>ከ@consertrievew የቴሌግራም ቻናል የቅርብ ጊዜ የኮንሰርት ዝመናዎችን ይመልከቱ። የዳግማዊ ዓሊ እና ሌሎች አርቲስቶች የቀጥታ ትርኢቶች፣ የኮንሰርት መርሃ ግብሮች እና ትኬቶች መረጃ እዚህ ይገኛሉ።</p>
+      <div id="telegram-feed">
+        <div class='sk-ww-telegram-channel' data-embed-id='25575296'></div>
+        <script src='https://widgets.sociablekit.com/telegram-channel/widget.js'></script>
+      </div>
+      <div id="error-message" class="error-message" style="display: none;">
+        የቴሌግራም ምግብ መጫን አልተሳካም። እባክዎ የተግባር መረጃ ደረጃን ያረጋግጡ ወይም በኋላ እንደገና ይሞክሩ።
+      </div>
+    </div>
+  </div>
+  <footer>
+    <p>© 2025 የኢትዮጵያ ሙዚቃ ግምገማዎች</p>
+  </footer>
+  <script>
+    // Error handling for SociableKIT widget
+    window.addEventListener('load', function() {
+      const feed = document.getElementById('telegram-feed');
+      const errorMessage = document.getElementById('error-message');
+      setTimeout(() => {
+        if (!feed.querySelector('.sk-ww-telegram-channel').childNodes.length || !document.querySelector('.sk-ww-telegram-channel').innerHTML.trim()) {
+          errorMessage.style.display = 'block';
+        }
+      }, 5000); // Wait 5 seconds to check if widget loads
+    });
+  </script>
+</body>
+</html>

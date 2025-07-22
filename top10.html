@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Top 10 Music Charts | የሙዚቃ ሰንጠረዥ</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to bottom right, #111827, #1f2937);
+      color: white;
+    }
+
+    header {
+      text-align: center;
+      padding: 1.5rem;
+      background-color: #111827;
+      border-bottom: 2px solid #374151;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin: 0;
+      color: #facc15;
+    }
+
+    .tabs {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .tabs button {
+      background: #374151;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+
+    .tabs button.active {
+      background: #facc15;
+      color: black;
+    }
+
+    .chart-list {
+      max-width: 700px;
+      margin: 2rem auto;
+      padding: 1rem;
+    }
+
+    .chart-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+      background-color: #1f2937;
+      padding: 0.8rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      transition: 0.3s;
+    }
+
+    .chart-item:hover {
+      transform: scale(1.02);
+    }
+
+    .chart-item img {
+      width: 60px;
+      height: 60px;
+      border-radius: 8px;
+      margin-right: 1rem;
+    }
+
+    .chart-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .title {
+      font-weight: 600;
+    }
+
+    .channel {
+      font-size: 0.85rem;
+      color: #9ca3af;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>🎵 Top 10 Music Chart | የሙዚቃ ሰንጠረዥ</h1>
+    <div class="tabs">
+      <button class="active" onclick="loadChart('weekly')">Weekly</button>
+      <button onclick="loadChart('monthly')">Monthly</button>
+      <button onclick="loadChart('yearly')">Yearly</button>
+    </div>
+  </header>
+
+  <div class="chart-list" id="chartList">
+    Loading...
+  </div>
+
+  <script>
+    async function loadChart(type) {
+      // Highlight active tab
+      document.querySelectorAll('.tabs button').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+
+      try {
+        const response = await fetch(`${type}-chart.json`);
+        const data = await response.json();
+        renderChart(data);
+      } catch (err) {
+        document.getElementById('chartList').innerHTML = '<p>Error loading chart data.</p>';
+      }
+    }
+
+    function renderChart(data) {
+      const container = document.getElementById('chartList');
+      container.innerHTML = '';
+
+      data.forEach((item, index) => {
+        const chartItem = document.createElement('div');
+        chartItem.className = 'chart-item';
+        chartItem.innerHTML = `
+          <img src="${item.thumbnail}" alt="Thumbnail">
+          <div class="chart-info">
+            <div class="title">#${index + 1}. ${item.title}</div>
+            <div class="channel">📺 ${item.channelTitle}</div>
+          </div>
+        `;
+        container.appendChild(chartItem);
+      });
+    }
+
+    // Initial load
+    loadChart('weekly');
+  </script>
+</body>
+</html>

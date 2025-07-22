@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Artist Biographies | ግለ ታሪክ የሙዚቃ</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Ethiopic:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    :root {
+      --primary: #e74c3c;
+      --secondary: #f39c12;
+      --dark: #2c3e50;
+      --light: #ecf0f1;
+    }
+
+    body {
+      font-family: 'Noto Sans Ethiopic', Arial, sans-serif;
+      background: linear-gradient(135deg, var(--dark), #34495e);
+      background-size: 400% 400%;
+      animation: gradientShift 15s ease infinite;
+      color: white;
+      margin: 0;
+      padding: 2rem;
+      min-height: 100vh;
+    }
+
+    @keyframes gradientShift {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
+    }
+
+    h1 {
+      text-align: center;
+      margin: 1rem 0 2rem;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-size: 2.5rem;
+    }
+
+    .search-container {
+      max-width: 600px;
+      margin: 0 auto 2rem;
+      position: relative;
+    }
+
+    #searchInput {
+      width: 100%;
+      padding: 12px 20px;
+      border-radius: 30px;
+      border: none;
+      background: rgba(255,255,255,0.1);
+      color: white;
+      font-family: 'Noto Sans Ethiopic', Arial, sans-serif;
+      font-size: 1rem;
+      padding-left: 50px;
+    }
+
+    #searchInput::placeholder {
+      color: #bdc3c7;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #bdc3c7;
+    }
+
+    .artist-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .artist-card {
+      background: rgba(0,0,0,0.5);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+      transition: transform 0.3s, box-shadow 0.3s;
+      cursor: pointer;
+    }
+
+    .artist-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+    }
+
+    .artist-image {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      border-bottom: 3px solid var(--primary);
+    }
+
+    .artist-info {
+      padding: 1.5rem;
+    }
+
+    .artist-name {
+      font-size: 1.5rem;
+      margin: 0 0 0.5rem;
+      color: var(--light);
+    }
+
+    .artist-genre {
+      display: inline-block;
+      background: var(--secondary);
+      color: #111;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      margin-bottom: 1rem;
+      font-weight: bold;
+    }
+
+    .artist-bio {
+      font-size: 0.95rem;
+      line-height: 1.5;
+      margin-bottom: 1rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      color: var(--light);
+    }
+
+    /* Updated Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.85);
+      z-index: 1000;
+      overflow-y: auto;
+    }
+
+    .modal-content {
+      background: var(--dark);
+      margin: 2rem auto;
+      padding: 2rem;
+      border-radius: 12px;
+      max-width: 800px;
+      position: relative;
+      animation: modalFadeIn 0.3s;
+      color: var(--light);
+      box-shadow: 0 0 20px var(--primary);
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: translateY(-50px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .close-modal {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      font-size: 2rem;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+      user-select: none;
+    }
+
+    .modal-image {
+      width: 200px;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 5px solid var(--primary);
+      margin: 0 auto 1rem;
+      display: block;
+      box-shadow: 0 0 10px var(--secondary);
+    }
+
+    .modal-image-bottom {
+      width: 100%;
+      max-height: 300px;
+      object-fit: contain;
+      border-radius: 12px;
+      margin: 1rem auto;
+      display: block;
+      border: 2px solid var(--primary);
+    }
+
+    .modal-name {
+      text-align: center;
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+      color: var(--light);
+    }
+
+    .modal-genre {
+      text-align: center;
+      display: block;
+      background: var(--secondary);
+      color: #111;
+      padding: 8px 20px;
+      border-radius: 20px;
+      font-size: 1rem;
+      margin: 0 auto 1.5rem;
+      width: fit-content;
+      font-weight: bold;
+      box-shadow: 0 0 10px var(--primary);
+    }
+
+    .modal-bio {
+      line-height: 1.6;
+      margin-bottom: 1rem;
+      white-space: pre-wrap;
+      padding: 1rem;
+      background: rgba(0,0,0,0.3);
+      border-radius: 8px;
+      max-height: 300px;
+      overflow-y: auto;
+      border-left: 3px solid var(--primary);
+    }
+
+    .modal-stats {
+      display: flex;
+      justify-content: space-around;
+      margin: 1.5rem 0;
+      text-align: center;
+      flex-wrap: wrap;
+    }
+
+    .stat-item {
+      padding: 0 1rem;
+      margin: 0.5rem;
+      min-width: 100px;
+    }
+
+    .stat-number {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: var(--secondary);
+    }
+
+    .stat-label {
+      font-size: 1rem;
+      color: #bdc3c7;
+    }
+
+    @media (max-width: 768px) {
+      .artist-container {
+        grid-template-columns: 1fr;
+      }
+      
+      h1 {
+        font-size: 1.8rem;
+      }
+      
+      .modal-content {
+        margin: 1rem auto;
+        width: 95%;
+        padding: 1rem;
+      }
+      
+      .modal-image {
+        width: 150px;
+        height: 150px;
+      }
+
+      .modal-bio {
+        max-height: 200px;
+      }
+
+      .modal-image-bottom {
+        max-height: 200px;
+      }
+      
+      .modal-name {
+        font-size: 2rem;
+      }
+      
+      .modal-stats {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Artist Biographies | ግለ ታሪክ የሙዚቃ</h1>
+
+  <div class="search-container">
+    <i class="fas fa-search search-icon"></i>
+    <input type="text" id="searchInput" placeholder="Search artists... | አርቲስቶችን ፈልግ..." aria-label="Search artists" />
+  </div>
+
+  <div class="artist-container" id="artistContainer">
+    <!-- Artists loaded here -->
+  </div>
+
+  <div id="bioModal" class="modal">
+    <div class="modal-content">
+      <span class="close-modal" aria-label="Close modal">×</span>
+      <img id="modalImage" class="modal-image" src="" alt="Artist" />
+      <h2 id="modalName" class="modal-name"></h2>
+      <span id="modalGenre" class="modal-genre"></span>
+      <div class="modal-stats">
+        <div class="stat-item">
+          <div class="stat-number" id="modalAlbums"></div>
+          <div class="stat-label">Albums | አልበሞች</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number" id="modalSongs"></div>
+          <div class="stat-label">Songs | ዘፈኖች</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number" id="modalYears"></div>
+          <div class="stat-label">Years Active | የስራ ዘመን</div>
+        </div>
+      </div>
+      <p id="modalBio" class="modal-bio"></p>
+      <img id="modalImageBottom" class="modal-image-bottom" src="" alt="Artist secondary image" />
+    </div>
+  </div>
+
+  <script>
+    const artistContainer = document.getElementById('artistContainer');
+    const searchInput = document.getElementById('searchInput');
+    const bioModal = document.getElementById('bioModal');
+    const modalImage = document.getElementById('modalImage');
+    const modalImageBottom = document.getElementById('modalImageBottom');
+    const modalName = document.getElementById('modalName');
+    const modalGenre = document.getElementById('modalGenre');
+    const modalBio = document.getElementById('modalBio');
+    const modalAlbums = document.getElementById('modalAlbums');
+    const modalSongs = document.getElementById('modalSongs');
+    const modalYears = document.getElementById('modalYears');
+    const closeModalBtn = bioModal.querySelector('.close-modal');
+
+    // Fallback artist data in case fetch fails
+    const fallbackArtists = [
+      {
+        id: 1,
+        name: "Dagimawi Ali",
+        imageTop: "https://via.placeholder.com/300x250?text=Dagimawi+Ali",
+        imageBottom: "https://via.placeholder.com/300x200?text=Dagimawi+Ali+Secondary",
+        genre: "Ethiopian Traditional / Modern",
+        bio: "ተወዳጁ አቀናባሪ፣ ቤዝ ጊታር እና የድራም ተጨዋች ዳግማዊ ዓሊ... [full bio text]",
+        stats: { albums: 12, songs: 85, years: 25 },
+        imageStyle: "contain"
+      }
+    ];
+
+    let artists = [];
+
+    // Loading indicator
+    artistContainer.innerHTML = '<p style="text-align:center; color:#f39c12;">Loading artists... | አርቲስቶችን በመጫን ላይ...</p>';
+
+    // Fetch artist data with enhanced error handling
+    fetch('artists.json')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        artists = Array.isArray(data) ? data : [data];
+        if (artists.length === 0) {
+          throw new Error('No artists found in JSON data');
+        }
+        renderArtists();
+      })
+      .catch(err => {
+        console.error('Error loading artists:', err.message);
+        artistContainer.innerHTML = `<p style="color:#f39c12; text-align:center;">Failed to load artist data: ${err.message}. Using fallback data. | የአርቲስቶች ውሂብ መጫን አልተሳካም፡ ${err.message}። መጠባበቂያ ውሂብ በመጠቀም ላይ።</p>`;
+        artists = fallbackArtists;
+        renderArtists();
+      });
+
+    function renderArtists(filter = '') {
+      artistContainer.innerHTML = '';
+
+      const filtered = artists.filter(artist => {
+        const term = filter.toLowerCase();
+        return artist.name.toLowerCase().includes(term) ||
+               (artist.genre && artist.genre.toLowerCase().includes(term)) ||
+               artist.bio.toLowerCase().includes(term);
+      });
+
+      if (filtered.length === 0) {
+        artistContainer.innerHTML = `<p style="text-align:center; grid-column: 1/-1; color:#f39c12; font-size:1.2rem;">No artists found | አርቲስቶች አልተገኙም</p>`;
+        return;
+      }
+
+      filtered.forEach(artist => {
+        const card = document.createElement('div');
+        card.classList.add('artist-card');
+        card.innerHTML = `
+          <img src="${artist.imageTop}" alt="${artist.name}" class="artist-image" loading="lazy" onerror="this.src='https://via.placeholder.com/300x250?text=Image+Not+Found'" />
+          <div class="artist-info">
+            <h3 class="artist-name">${artist.name}</h3>
+            <span class="artist-genre">${artist.genre || 'Ethiopian Music'}</span>
+            <p class="artist-bio">${artist.bio.substring(0, 160)}${artist.bio.length > 160 ? '...' : ''}</p>
+          </div>
+        `;
+        card.addEventListener('click', () => openBioModal(artist.id));
+        artistContainer.appendChild(card);
+      });
+    }
+
+    function openBioModal(id) {
+      const artist = artists.find(a => a.id === id);
+      if (!artist) return;
+
+      modalImage.src = artist.imageTop || 'https://via.placeholder.com/300x250?text=Image+Not+Found';
+      modalImage.alt = artist.name;
+      modalImageBottom.src = artist.imageBottom || 'https://via.placeholder.com/300x200?text=Image+Not+Found';
+      modalImageBottom.style.objectFit = artist.imageStyle || 'contain';
+      modalImageBottom.alt = `${artist.name} secondary image`;
+      modalName.textContent = artist.name;
+      modalGenre.textContent = artist.genre || 'Ethiopian Music';
+      modalBio.textContent = artist.bio;
+      modalAlbums.textContent = artist.stats ? artist.stats.albums : 'N/A';
+      modalSongs.textContent = artist.stats ? artist.stats.songs : 'N/A';
+      modalYears.textContent = artist.stats ? artist.stats.years : 'N/A';
+
+      bioModal.style.display = 'block';
+      document.body.style.overflow = 'hidden';
+      
+      // Scroll to top of modal when opened
+      document.querySelector('.modal-content').scrollTo(0, 0);
+    }
+
+    closeModalBtn.addEventListener('click', () => {
+      bioModal.style.display = 'none';
+      document.body.style.overflow = 'auto';
+    });
+
+    bioModal.addEventListener('click', e => {
+      if (e.target === bioModal) {
+        bioModal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+      }
+    });
+
+    // Debounced search
+    let timeout;
+    searchInput.addEventListener('input', e => {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => renderArtists(e.target.value), 300);
+    });
+
+    // Close modal with Escape key
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && bioModal.style.display === 'block') {
+        bioModal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+      }
+    });
+  </script>
+</body>
+</html>

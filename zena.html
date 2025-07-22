@@ -1,0 +1,32 @@
+<style>
+  /* ... your existing styles ... */
+
+  /* Container for Telegram widget */
+  #telegram-feed {
+    width: 100%;
+    height: 70vh;           /* Responsive height: 70% of viewport height */
+    max-height: 700px;      /* Optional max height */
+    min-height: 400px;
+    overflow: hidden;
+    margin: 1rem 0;
+  }
+
+  .sk-ww-telegram-channel {
+    width: 100%;
+    height: 100% !important;   /* Fill parent container's height */
+    border-radius: 10px;
+    overflow-y: auto !important; /* Allow vertical scroll inside widget if needed */
+  }
+
+  /* Optional: make body and html full height for vh units to work better */
+  html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+</style>
+
+<div id="telegram-feed">
+  <div class='sk-ww-telegram-channel' data-embed-id='25574990'></div>
+  <script src='https://widgets.sociablekit.com/telegram-channel/widget.js'></script>
+</div>
